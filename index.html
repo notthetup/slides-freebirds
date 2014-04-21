@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Free Birds</title>
+
+	<meta name="description" content="Our stab at the Google dev-art project using Three.js and WebAudioAPI">
+	<meta name="author" content="Chinmay Pendharkar">
+
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="css/reveal.min.css">
+	<link rel="stylesheet" href="css/theme/beige.css" id="beige">
+
+	<!-- For syntax highlighting -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+	<script>
+		if( window.location.search.match( /print-pdf/gi ) ) {
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = 'css/print/pdf.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		}
+	</script>
+
+	<script src="js/bird.js"></script>
+	<script src="js/xgui.js"></script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+    <section data-id="d3003cfb3909d2efc34c0b0965848062">
+        <h1>Untitled</h1>
+    </section>
+    <section data-id="3877935b3af23dad5648f87cf2da21fb">
+        <section data-id="8cb2356d93cae630f950a1292122a96d">
+            <h2>Audio</h2>
+        </section>
+        <section data-id="30d21b7ec9589bb1316a23bafd847920">
+            <h2>Bird Sounds</h2>
+<div>Add sounds to :</div>
+<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/chinmaypendharkar/images/355677/rendering.png" style="width: 683.774177954603px; height: 488.9458983279063px; max-height: none; max-width: none;">
+        </section>
+        <section data-id="b78ece2d7cd2b9db82c5189ac5418978">
+            <h2>Sounds</h2>
+<div>
+            <br>
+        </div>
+<div>Realistic? &nbsp;- <font style="font-size: 24px;">Maybe</font>
+</div>
+<div>
+        <br>
+    </div>
+<div>
+    <br>
+    </div>
+<div>Interactive?&nbsp;<span style="font-size: 35.591556549072266px; font-style: normal; font-variant: normal;">-&nbsp;</span>
+    <font style="font-family: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-size: 24px;">Definitely!</font>
+</div>
+<div>
+    <br>
+</div>
+<div>
+<br>
+</div>
+<div>Browser Based?&nbsp;<span style="font-size: 35.591556549072266px; font-style: normal; font-variant: normal;">-&nbsp;</span>
+<font style="font-family: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-size: 24px;">Definitely!</font>
+</div>
+<div>
+<br>
+</div>
+<div>
+    <br>
+</div>
+<div>YAY!! I GET TO USE <u>WEBAUDIO</u> API !!!!!</div>
+</section>
+<section data-id="4016ae11224f01350893b45a550871f7">
+    <h2>Sound Design</h2>
+<div>Andy Farnell -&nbsp;http://obiwannabe.co.uk/</div>
+<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/chinmaypendharkar/images/355686/9780262014410.jpg" style="width: 399.13696636893786px; height: 528.2368292016496px; max-height: none; max-width: none;">
+</section>
+<section data-id="81b4193c4cde37a22e17307c7efb35a8">
+    <h2>Bird Sound Synthesis</h2>
+<div>
+    <a href="http://www.obiwannabe.co.uk/tutorials/html/tutorial_birds.html">Modeling Bird Syrinx</a>
+</div>
+<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/chinmaypendharkar/images/355689/Screen_Shot_2014-04-21_at_10.46.45_am.png">
+</section>
+<section data-id="163a1b6506dab2463594d58ea03616ff">
+    <h2 style="font-style: normal; font-variant: normal;">Moar Bird Sounds!</h2>
+<div>Amplitude Modulation + Frequency Modulation</div>
+    <img src="https://s3.amazonaws.com/media-p.slid.es/uploads/chinmaypendharkar/images/355692/Screenshot_2014-04-19_21.16.39.png">
+</section>
+<section data-id="64a6d399932d327575b2f827e439d3a8">
+    <h2>Pure-Data -&gt; WebAudio</h2>
+    <img src="https://s3.amazonaws.com/media-p.slid.es/uploads/chinmaypendharkar/images/355695/BirdcallSynthesis.jpg" style="width: 712.5910655343772px; height: 533.5830968130782px; max-height: none; max-width: none;">
+</section>
+<section data-id="21965282e116efffd13b61ac9fc5e7ad">
+<h2>Psst.. Wanna see some code?</h2>
+<div>Oscillators</div>
+<div>
+<pre><code>  // Create Oscillators
+  var carrierOsc = audioContext.createOscillator();
+  var modOsc = audioContext.createOscillator();
+  var amOsc = audioContext.createOscillator();
+
+  var modOscGain = audioContext.createGain();
+  var amOscGain = audioContext.createGain();
+</code></pre>
+</div>
+<div>
+<br>
+</div>
+<div>AM + FM</div>
+<pre><code>  // Create the AM/FM structures
+  var fm = new fmSynth(audioContext, carrierOsc, modOscGain);
+  var am = new amSynth(audioContext, fm, amOscGain);
+</code></pre>
+<br>
+
+
+</section>
+<section data-id="7fc4606b939bccf62534b77578d1c84d">
+<h2>Moar Code!</h2>
+<div>
+    Envelopes
+</div>
+<div>
+<pre><code> // Create control envelopes
+ this.mainEnvelope = new paramEAD(audioContext, mainGain.gain);
+ this.fmFrequencyEnvelope = new paramEAD(audioContext, modOsc.frequency);
+ this.amFrequencyEnvelope = new paramEAD(audioContext, amOsc.frequency);
+ this.fmGainEnvelope = new paramEAD(audioContext,  modOscGain.gain);
+ this.amGainEnvelope = new paramEAD(audioContext, amOscGain.gain);</code></pre>
+</div>&nbsp;<div>
+<span>Connections<br>
+</span>
+<div>
+<pre><code> // Connect the AM output to destination
+ am.connect(mainGain);
+ mainGain.connect(panner);
+ panner.connect(audioContext.destination);</code></pre>
+</div>
+<div>
+    <br>
+</div>
+Profit??
+</div>
+</section>
+<section style="text-align: center" data-state="demoslide" data-id="08220d9190bef8db532cf9b4be09833d">
+    <h2>Lets make some NOISE!</h2>
+    <div><a href="http://notthetup.github.io/birds/">Chirrp</a></div><br>
+    <div style="display: inline-block;" id="audioui"></div>
+</section>
+</section>
+</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.min.js"></script>
+
+	<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+				{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+				{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+				{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+				{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+			//Reveal.addEventListener( 'demoslide', function( event ) {
+				var audioUI = document.getElementById("audioui");
+				var ac;
+				window.AudioContext = window.AudioContext || window.webkitAudioContext;
+				if (window.AudioContext) ac = new AudioContext();
+
+				var count = 0;
+
+				var birds = [new bird(ac), new bird(ac), new bird(ac), new bird(ac)];
+
+				// var
+				gui = new xgui( {width: 640, height: 660, backgroundColor: "rgb(65, 104, 137)", frontColor: "rgb(153, 193, 226)", dimColor: "rgb(90, 137, 177)"} );
+
+				var pk = ['ifrq', 'atk', 'dcy', 'fmod1', 'atkf1', 'dcyf1', 'fmod2', 'atkf2', 'dcyf2', 'amod1', 'atka1', 'dcya1', 'amod2', 'atka2', 'dcya2'];
+
+				var presets = generatePresets();
+				var options = Object.keys(presets);
+				var params = presets['lesser-spotted-grinchwarbler'];
+				var initifrq = params.ifrq;
+
+				var frqKnob;
+				var knob, key;
+				var i = 0;
+
+				function makeCb(key) {
+					return function(a, up) {
+						console.log("called");
+						if (key) params[key] = a;
+						if (up) chirp(key);
+					};
+				}
+
+				var knobs = [];
+				for (var y = 0; y  < 5; y ++) {
+					for (var x = 0; x < 3; x ++ ) {
+						key = pk[i];
+
+						knob = new gui.Knob( {x: x * 100 + 80, y: y * 100 + 70, radius: 25, value: params[key], min: 0, max: 1, decimals: 7 } );
+
+						if (key == "ifrq"){
+							frqKnob = knob;
+						}
+
+						knob.value.bind(makeCb(key));
+
+						new gui.Label( {x: x * 100 + 80, y: y * 100 + 135, text: key} );
+
+						i++;
+						knobs.push(knob);
+					}
+				}
+
+				var dropdown = new gui.DropDown( {x: 80, y: 7, height:20, width:148, values:options , texts:options } );
+
+				dropdown.value.bind(function(key){
+					params = presets[key];
+					knobs.forEach(function (knob, i){
+						knob.value.v = params[pk[i]];
+						knob.draw();
+					});
+					initifrq = params.ifrq;
+				});
+
+				var button = new gui.Button({x: 90+180, y: 5, text: "Chirp", height: 25, font: "20px Arial"});
+
+				button.value.bind(makeCb(null));
+
+				var generate = new gui.CheckBox( {x: 90 +240, y: 10, text: "Repeat",width:15,  height: 15} );
+
+				generate.value.bind(function(a, up){
+					if(up){
+						//console.log("checked");
+						if (chirpGen){
+							window.clearInterval(chirpGen);
+							chirpGen = null;
+						}else{
+							chirpGen = window.setInterval(function(){
+								chirp(null,ac.currentTime+(Math.random()*0.4));
+							},(params.atk*1000*0.9));
+						}
+					}
+				});
+
+				var tp0 = new gui.TrackPad( {x: 90 + 100 + 100 + 100, y: 5 + 70, min: 0, max: 4, value1: 1.5, value2:3.8 } );
+
+				tp0.value1.bind(makeCb(null));
+
+				var rPos = new gui.CheckBox( {x: 90 + 410, y: 90, text: "Rand",width:15,  height: 15} );
+
+				var rIfqr = new gui.CheckBox( {x: 30, y: 85, text: "Rand",width:15,  height: 15} );
+
+				var chirpGen;
+
+				audioUI.appendChild( gui.getDomElement() );
+
+				//var trigButton=document.getElementById("triggerButton");
+				function chirp(caller, time){
+					var b = birds[count];
+					console.log(JSON.stringify(params, null, '\t' ));
+					//console.log(caller);
+					if(rIfqr.value.v && !caller){
+						params.ifrq = initifrq + (rnd_snd()*0.01);
+						frqKnob.value.v = params.ifrq;
+						frqKnob.draw();
+					}
+					if(rPos.value.v && !caller){
+						tp0.value1.v = Math.random()*tp0.max;
+						tp0.value2.v = Math.random()*tp0.max;
+						tp0.draw();
+					}
+
+					b.position = {x:tp0.value1.v-tp0.max/2, y: 0, z: (40-tp0.value2.v*10)};
+					b.velocity = {x:(Math.random()-0.5)*10, y: 0, z: 0};
+					//console.log(tp0);
+					b.applyParams(params);
+					b.chirp(time);
+					count = (count+1) % birds.length;
+				}
+
+
+				function rnd_snd() {
+					return (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1);
+				}
+
+			//} );
+
+		</script>
+
+	</body>
+	</html>
